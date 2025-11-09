@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:recallist/core/data/repositories/item_repository.dart';
 import 'package:recallist/core/models/item.dart';
+import 'package:recallist/core/service_locator.dart';
+import 'package:recallist/features/items/detail/item_detail_screen.dart';
 
 String _formatDate(DateTime date) {
   return DateFormat('MMM d, y').format(date);
@@ -19,31 +22,49 @@ class ItemCard extends StatelessWidget {
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              item.title,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ItemDetailScreen(
+                item: item,
+                onItemUpdated: onItemUpdated,
+                onItemDeleted: onItemUpdated,
+              ),
             ),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    RevisedDateCard(date: lastRevised),
-                    const SizedBox(height: 4),
-                    RevisionDateCard(date: nextRevision),
-                  ],
+          );
+        },
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                item.title,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
-                ReviseButton(item: item, onRevise: onItemUpdated),
-              ],
-            ),
-          ],
+              ),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RevisedDateCard(date: lastRevised),
+                      const SizedBox(height: 4),
+                      RevisionDateCard(date: nextRevision),
+                    ],
+                  ),
+                  ReviseButton(item: item, onRevise: onItemUpdated),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -56,16 +77,22 @@ class ReviseButton extends StatelessWidget {
   final Future<void> Function() onRevise;
   final Item item;
 
+  Future<void> _handleRevise() async {
+    final updatedRevisions = List<DateTime>.from(item.revisions)
+      ..add(DateTime.now());
+
+    final updatedItem = item.copyWith(revisions: updatedRevisions);
+    await sl<ItemRepository>().updateItem(updatedItem);
+    await onRevise();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      onPressed: () {
-        item.markAsRevised();
-        onRevise();
-      },
+      onPressed: _handleRevise,
       icon: Icon(
         Icons.check,
         size: 30,

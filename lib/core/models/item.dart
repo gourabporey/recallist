@@ -76,4 +76,29 @@ class Item extends HiveObject {
   List<DateTime> getAllRevisions() {
     return revisions;
   }
+
+  /// Create a copy of this item with updated fields
+  Item copyWith({
+    int? id,
+    String? title,
+    String? notes,
+    List<String>? tags,
+    List<String>? links,
+    List<String>? images,
+    DateTime? createdDate,
+    List<DateTime>? revisions,
+    List<int>? revisionPattern,
+  }) {
+    return Item(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      notes: notes ?? this.notes,
+      tags: tags ?? this.tags,
+      links: links ?? this.links,
+      images: images ?? this.images,
+      createdDate: createdDate ?? this.createdDate,
+      revisions: revisions ?? List<DateTime>.from(this.revisions),
+      revisionPattern: revisionPattern ?? this.revisionPattern,
+    );
+  }
 }
