@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:recallist/core/data/repositories/item_repository.dart';
 import 'package:recallist/core/models/item.dart';
 import 'package:recallist/core/service_locator.dart';
+import 'package:recallist/core/services/notification_service.dart';
 import 'package:recallist/features/items/add_item/widgets/centered_save_button.dart';
 import 'package:recallist/features/items/add_item/widgets/item_header.dart';
 import 'package:recallist/features/items/add_item/widgets/links_field.dart';
@@ -84,6 +85,8 @@ class _AddItemSheetState extends State<AddItemSheet> {
     // Save to repository
     try {
       await sl<ItemRepository>().addItem(item);
+      // Reschedule notifications when new item is added
+      sl<NotificationService>().rescheduleNotifications();
       if (mounted) {
         Navigator.pop(context);
       }

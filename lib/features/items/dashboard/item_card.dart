@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:recallist/core/data/repositories/item_repository.dart';
 import 'package:recallist/core/models/item.dart';
 import 'package:recallist/core/service_locator.dart';
+import 'package:recallist/core/services/notification_service.dart';
 import 'package:recallist/features/items/detail/item_detail_screen.dart';
 
 String _formatDate(DateTime date) {
@@ -84,6 +85,8 @@ class ReviseButton extends StatelessWidget {
     final updatedItem = item.copyWith(revisions: updatedRevisions);
     await sl<ItemRepository>().updateItem(updatedItem);
     await onRevise();
+    // Reschedule notifications when item is revised
+    sl<NotificationService>().rescheduleNotifications();
   }
 
   @override

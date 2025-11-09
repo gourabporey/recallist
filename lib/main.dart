@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:recallist/core/data/repositories/item_repository.dart';
 import 'package:recallist/core/models/item.dart';
 import 'package:recallist/core/service_locator.dart';
+import 'package:recallist/core/services/notification_service.dart';
 import 'package:recallist/features/items/add_item/add_item_button.dart';
 import 'package:recallist/features/items/dashboard/dashboard_utils.dart';
 import 'package:recallist/features/items/dashboard/tab_view.dart';
@@ -9,6 +10,8 @@ import 'package:recallist/features/items/dashboard/tab_view.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initServiceLocator();
+  // Initialize notification service
+  await sl<NotificationService>().initialize();
   runApp(const MyApp());
 }
 
@@ -64,6 +67,8 @@ class _MyHomePageState extends State<MyHomePage>
         _items = items;
         _isLoading = false;
       });
+      // Reschedule notifications when items are updated
+      sl<NotificationService>().rescheduleNotifications();
     } catch (e) {
       setState(() {
         _isLoading = false;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:recallist/core/data/repositories/item_repository.dart';
 import 'package:recallist/core/models/item.dart';
 import 'package:recallist/core/service_locator.dart';
+import 'package:recallist/core/services/notification_service.dart';
 import 'package:recallist/features/items/detail/widgets/edit_field_modal.dart';
 import 'package:recallist/features/items/detail/widgets/revision_timeline.dart';
 
@@ -55,6 +56,8 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
         _isSaving = false;
       });
       widget.onItemUpdated();
+      // Reschedule notifications when item is updated
+      sl<NotificationService>().rescheduleNotifications();
     } catch (e) {
       setState(() {
         _isSaving = false;
@@ -92,6 +95,8 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     if (confirmed == true) {
       try {
         await sl<ItemRepository>().deleteItem(_currentItem.id);
+        // Reschedule notifications when item is deleted
+        sl<NotificationService>().rescheduleNotifications();
         if (mounted) {
           widget.onItemDeleted();
           Navigator.pop(context);
