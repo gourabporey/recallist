@@ -92,7 +92,10 @@ class _MyHomePageState extends State<MyHomePage> {
               child: ListView.builder(
                 itemCount: _items.length,
                 itemBuilder: (context, index) {
-                  return ItemCard(item: _items[index]);
+                  return ItemCard(
+                    item: _items[index],
+                    onItemUpdated: _loadItems,
+                  );
                 },
               ),
             ),

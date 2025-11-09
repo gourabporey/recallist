@@ -68,4 +68,12 @@ class Item extends HiveObject {
   DateTime getLastRevisedDate() {
     return revisions.isNotEmpty ? revisions.last : createdDate;
   }
+
+  void markAsRevised() {
+    revisions.add(DateTime.now());
+  }
+
+  List<DateTime> getAllRevisions() {
+    return revisions;
+  }
 }
