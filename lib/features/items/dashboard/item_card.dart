@@ -91,19 +91,18 @@ class ReviseButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton.icon(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
+    // add a border color to the button
+    return ElevatedButton(
       onPressed: _handleRevise,
-      icon: Icon(
-        Icons.check,
-        size: 30,
-        color: Theme.of(context).colorScheme.primary,
+      style: ButtonStyle(
+        backgroundColor: WidgetStateProperty.all(
+          Theme.of(context).colorScheme.inversePrimary,
+        ),
       ),
-      label: Text(
-        'Revise',
-        style: TextStyle(color: Theme.of(context).colorScheme.primary),
+      child: Icon(
+        Icons.check,
+        color: Theme.of(context).colorScheme.primary,
+        size: 30,
       ),
     );
   }
