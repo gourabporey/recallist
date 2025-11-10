@@ -27,9 +27,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Recallist',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
+      theme: ThemeData.light(), // default light theme
+      darkTheme: ThemeData.dark(), // default dark theme
+      themeMode: ThemeMode.system,
       home: const MyHomePage(),
     );
   }
