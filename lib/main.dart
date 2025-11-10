@@ -9,9 +9,14 @@ import 'package:recallist/features/items/dashboard/tab_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initServiceLocator();
-  // Initialize notification service
-  await sl<NotificationService>().initialize();
+  try {
+    await initServiceLocator();
+    // Initialize notification service
+    await sl<NotificationService>().initialize();
+  } catch (ex) {
+    debugPrint(ex.toString());
+  }
+
   runApp(const MyApp());
 }
 
