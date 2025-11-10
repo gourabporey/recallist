@@ -42,6 +42,18 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+String getSaluation() {
+  final now = DateTime.now();
+  final hour = now.hour;
+  if (hour < 12) {
+    return 'Good morning';
+  } else if (hour < 18) {
+    return 'Good afternoon';
+  } else {
+    return 'Good evening';
+  }
+}
+
 class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
   List<Item> _items = [];
@@ -91,15 +103,16 @@ class _MyHomePageState extends State<MyHomePage>
     final todayItems = getTodayItems(_items);
     final tomorrowItems = getTomorrowItems(_items);
     final upcomingItems = getUpcomingItems(_items);
+    final salutation = getSaluation();
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text(
-          'Dashboard',
+        title: Text(
+          salutation,
           style: TextStyle(color: Color.fromARGB(255, 41, 22, 46)),
         ),
-        centerTitle: true,
+        centerTitle: false,
         bottom: _isLoading || _items.isEmpty || _tabController == null
             ? null
             : TabBar(

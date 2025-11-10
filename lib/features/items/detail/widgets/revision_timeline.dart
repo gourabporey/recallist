@@ -120,15 +120,15 @@ class _TimelineDot extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
-          width: 20,
-          height: 20,
+          width: 15,
+          height: 15,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: dotColor,
-            border: Border.all(color: Colors.white, width: 2),
+            border: Border.all(color: Colors.white, width: 1),
             boxShadow: [
               BoxShadow(
-                color: dotColor.withValues(alpha: 0.3),
+                color: dotColor.withValues(alpha: 0.2),
                 blurRadius: 4,
                 spreadRadius: 1,
               ),
@@ -151,6 +151,7 @@ class _TimelineDot extends StatelessWidget {
   String _formatDate(DateTime date) {
     final month = date.month.toString().padLeft(2, '0');
     final day = date.day.toString().padLeft(2, '0');
-    return '$month/$day';
+    final year = date.year.toString().substring(2);
+    return '$day/$month/$year';
   }
 }

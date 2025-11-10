@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:recallist/core/data/repositories/item_repository.dart';
 import 'package:recallist/core/models/item.dart';
 import 'package:recallist/core/service_locator.dart';
@@ -152,8 +153,8 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text(
-          'Item Details',
+        title: Text(
+          _currentItem.title,
           style: TextStyle(color: Color.fromARGB(255, 41, 22, 46)),
         ),
         centerTitle: true,
@@ -460,6 +461,7 @@ class _RevisionInfo extends StatelessWidget {
   }
 
   String _formatDate(DateTime date) {
-    return '${date.day}/${date.month}/${date.year}';
+    final formatter = DateFormat('MMM d, yyyy');
+    return formatter.format(date);
   }
 }
