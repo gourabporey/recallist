@@ -20,9 +20,20 @@ class ItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final lastRevised = item.getLastRevisedDate();
     final nextRevision = item.getNextRevisionDate();
+    final tags = item.tags ?? [];
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      shape: RoundedRectangleBorder(
+        side: BorderSide(
+          color: Theme.of(
+            context,
+          ).colorScheme.surfaceContainerHigh, // your border color
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(20), // optional rounded corners
+      ),
+      elevation: 1,
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -56,6 +67,10 @@ class ItemCard extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      TagsWidget(tags: tags),
+                      tags.isNotEmpty
+                          ? const SizedBox(height: 8)
+                          : const SizedBox.shrink(),
                       RevisedDateCard(date: lastRevised),
                       const SizedBox(height: 4),
                       RevisionDateCard(date: nextRevision),
@@ -69,6 +84,52 @@ class ItemCard extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class TagsWidget extends StatelessWidget {
+  const TagsWidget({super.key, required this.tags});
+
+  final List<String> tags;
+
+  @override
+  Widget build(BuildContext context) {
+    return tags.isNotEmpty
+        ? Wrap(
+            spacing: 8,
+            runSpacing: 4,
+            children: tags
+                .map(
+                  (tag) => Chip(
+                    label: Text(
+                      tag.toUpperCase(),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 10,
+                      ),
+                    ),
+                    backgroundColor: Theme.of(
+                      context,
+                    ).colorScheme.surfaceContainer,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    elevation: 2,
+                    // shadowColor: Colors.black26,
+                    side: BorderSide(
+                      color: Theme.of(context).colorScheme.primaryFixedDim,
+                      width: 1,
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 1,
+                      vertical: 1,
+                    ),
+                  ),
+                )
+                .toList(),
+          )
+        : const SizedBox.shrink();
   }
 }
 
