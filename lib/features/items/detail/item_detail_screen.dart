@@ -6,6 +6,7 @@ import 'package:recallist/core/service_locator.dart';
 import 'package:recallist/core/services/notification_service.dart';
 import 'package:recallist/features/items/detail/widgets/edit_field_modal.dart';
 import 'package:recallist/features/items/detail/widgets/revision_timeline.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ItemDetailScreen extends StatefulWidget {
   const ItemDetailScreen({
@@ -292,10 +293,13 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                       ),
                       const SizedBox(width: 8),
                       Expanded(
-                        child: Text(
-                          link,
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
+                        child: InkWell(
+                          onTap: () => launchUrl(Uri.parse(link)),
+                          child: Text(
+                            link,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
                           ),
                         ),
                       ),
