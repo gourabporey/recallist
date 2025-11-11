@@ -4,6 +4,7 @@ import 'package:recallist/core/models/item.dart';
 import 'package:recallist/core/service_locator.dart';
 import 'package:recallist/core/services/notification_service.dart';
 import 'package:recallist/features/items/add_item/widgets/centered_save_button.dart';
+import 'package:recallist/features/items/add_item/widgets/date_field.dart';
 import 'package:recallist/features/items/add_item/widgets/item_header.dart';
 import 'package:recallist/features/items/add_item/widgets/links_field.dart';
 import 'package:recallist/features/items/add_item/widgets/notes_field.dart';
@@ -23,6 +24,7 @@ class _AddItemSheetState extends State<AddItemSheet> {
   final _notesController = TextEditingController();
   final _tagsController = TextEditingController();
   final _linksController = TextEditingController();
+  DateTime _createdDateValue = DateTime.now();
 
   String? _titleError;
   List<int> _revisionPattern = RevisionPatternSelector.defaultPattern;
@@ -42,6 +44,12 @@ class _AddItemSheetState extends State<AddItemSheet> {
         .map((e) => e.trim())
         .where((e) => e.isNotEmpty)
         .toList();
+  }
+
+  void _onDateChanged(DateTime? date) {
+    setState(() {
+      _createdDateValue = date ?? DateTime.now();
+    });
   }
 
   void _onSave() async {
@@ -77,7 +85,7 @@ class _AddItemSheetState extends State<AddItemSheet> {
       tags: tags?.isEmpty ?? true ? null : tags,
       links: links?.isEmpty ?? true ? null : links,
       images: null, // TODO: Implement image picker in future
-      createdDate: DateTime.now(),
+      createdDate: _createdDateValue,
       revisions: [],
       revisionPattern: _revisionPattern,
     );
@@ -126,6 +134,11 @@ class _AddItemSheetState extends State<AddItemSheet> {
             ),
             const SizedBox(height: 12),
             NotesField(controller: _notesController),
+            const SizedBox(height: 12),
+            DatePickerField(
+              onDateChanged: _onDateChanged,
+              initialDate: DateTime.now(),
+            ),
             const SizedBox(height: 12),
             TagsField(controller: _tagsController),
             const SizedBox(height: 12),

@@ -71,12 +71,22 @@ class ItemCard extends StatelessWidget {
                       tags.isNotEmpty
                           ? const SizedBox(height: 8)
                           : const SizedBox.shrink(),
-                      RevisedDateCard(date: lastRevised),
-                      const SizedBox(height: 4),
-                      RevisionDateCard(date: nextRevision),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              RevisedDateCard(date: lastRevised),
+                              const SizedBox(height: 4),
+                              RevisionDateCard(date: nextRevision),
+                            ],
+                          ),
+                          ReviseButton(item: item, onRevise: onItemUpdated),
+                        ],
+                      ),
                     ],
                   ),
-                  ReviseButton(item: item, onRevise: onItemUpdated),
                 ],
               ),
             ],
@@ -155,10 +165,9 @@ class ReviseButton extends StatelessWidget {
     // add a border color to the button
     return ElevatedButton(
       onPressed: _handleRevise,
-      style: ButtonStyle(
-        backgroundColor: WidgetStateProperty.all(
-          Theme.of(context).colorScheme.inversePrimary,
-        ),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
+        shape: CircleBorder(),
       ),
       child: Icon(
         Icons.check,
