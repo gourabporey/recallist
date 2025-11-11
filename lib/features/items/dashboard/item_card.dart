@@ -52,39 +52,35 @@ class ItemCard extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
             children: [
               Text(
                 item.title,
                 style: const TextStyle(
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  TagsWidget(tags: tags),
+                  tags.isNotEmpty
+                      ? const SizedBox(height: 8)
+                      : const SizedBox.shrink(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      TagsWidget(tags: tags),
-                      tags.isNotEmpty
-                          ? const SizedBox(height: 8)
-                          : const SizedBox.shrink(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              RevisedDateCard(date: lastRevised),
-                              const SizedBox(height: 4),
-                              RevisionDateCard(date: nextRevision),
-                            ],
-                          ),
-                          ReviseButton(item: item, onRevise: onItemUpdated),
+                          RevisedDateCard(date: lastRevised),
+                          const SizedBox(height: 4),
+                          RevisionDateCard(date: nextRevision),
                         ],
                       ),
+                      ReviseButton(item: item, onRevise: onItemUpdated),
                     ],
                   ),
                 ],
@@ -114,9 +110,11 @@ class TagsWidget extends StatelessWidget {
                     label: Text(
                       tag.toUpperCase(),
                       style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 10,
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.primary.withAlpha(150),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 9,
                       ),
                     ),
                     backgroundColor: Theme.of(
@@ -128,12 +126,14 @@ class TagsWidget extends StatelessWidget {
                     elevation: 2,
                     // shadowColor: Colors.black26,
                     side: BorderSide(
-                      color: Theme.of(context).colorScheme.primaryFixedDim,
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primaryFixedDim.withAlpha(80),
                       width: 1,
                     ),
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 1,
-                      vertical: 1,
+                      horizontal: 0,
+                      vertical: 0,
                     ),
                   ),
                 )
@@ -168,6 +168,10 @@ class ReviseButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
         shape: CircleBorder(),
+        side: BorderSide(
+          color: Theme.of(context).colorScheme.primary.withAlpha(50),
+          width: 2,
+        ),
       ),
       child: Icon(
         Icons.check,
