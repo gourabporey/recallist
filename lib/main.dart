@@ -101,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage>
   @override
   Widget build(BuildContext context) {
     final todayItems = getTodayItems(_items);
-    final tomorrowItems = getTomorrowItems(_items);
+    final missedItems = getMissedItems(_items);
     final upcomingItems = getUpcomingItems(_items);
     final salutation = getSaluation();
 
@@ -130,8 +130,8 @@ class _MyHomePageState extends State<MyHomePage>
                     controller: _tabController!,
                   ),
                   _TabLabel(
-                    label: 'Tomorrow',
-                    count: tomorrowItems.length,
+                    label: 'Missed',
+                    count: missedItems.length,
                     tabIndex: 1,
                     controller: _tabController!,
                   ),
@@ -165,9 +165,9 @@ class _MyHomePageState extends State<MyHomePage>
                   emptyMessage: 'Nothing scheduled today 🎉',
                 ),
                 ItemsTabView(
-                  items: tomorrowItems,
+                  items: missedItems,
                   onItemUpdated: _loadItems,
-                  emptyMessage: 'Nothing scheduled tomorrow 🎉',
+                  emptyMessage: 'Nothing missed 🎉',
                 ),
                 ItemsTabView(
                   items: upcomingItems,
