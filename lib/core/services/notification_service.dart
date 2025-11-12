@@ -20,7 +20,9 @@ class NotificationService {
     // Initialize timezone data
     tz.initializeTimeZones();
     // Use local timezone
-    tz.setLocalLocation(tz.local);
+
+    tz.setLocalLocation(tz.getLocation("Asia/Calcutta"));
+    print(">>>>> tz.local.name: ${tz.local.name}");
 
     // Initialize Android settings
     const androidSettings = AndroidInitializationSettings(
@@ -59,7 +61,7 @@ class NotificationService {
         ?.requestPermissions(alert: true, badge: true, sound: true);
 
     _initialized = true;
-    await scheduleAllNotifications();
+    // await scheduleAllNotifications();
   }
 
   /// Handle notification tap
@@ -132,15 +134,16 @@ class NotificationService {
       }
     }
 
-    // Schedule notification for 8 AM on the revision date
     final scheduledDate = tz.TZDateTime(
       tz.local,
       date.year,
       date.month,
       date.day,
-      8, // 8 AM
+      9, // 9 AM
       0, // 0 minutes
     );
+
+    print(">>> Scheduled date: $scheduledDate");
 
     // Use date as notification ID to ensure uniqueness per date
     final notificationId =
@@ -176,8 +179,6 @@ class NotificationService {
       scheduledDate,
       notificationDetails,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.dateAndTime,
     );
   }
